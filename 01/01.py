@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 import fileinput
-import re
 
 listone, listtwo = [], []
 
