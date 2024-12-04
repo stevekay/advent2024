@@ -5,30 +5,43 @@ import fileinput
 partone = 0
 parttwo = 0
 
-for line in fileinput.input():
-    line=line.strip()
-    print(line)
+def testReport(x):
+    increasing=0
+    decreasing=0
+    bigdiff=0
 
-    increase_found = 0
-    decrease_found = 0
-    same_found = 0
-    big_diff_found = 0
-
-    for e in range(1,line.count(' ')+1):
-        cur = int(line.split(' ')[e])
-        pre = int(line.split(' ')[e-1])
+    for e in range(1,len(x)):
+        cur = x[e]
+        pre = x[e-1]
         if cur > pre:
-            increase_found += 1
+            increasing = 1
+            if cur-pre > 3:
+                bigdiff = 1
         if cur < pre:
-            decrease_found += 1
+            decreasing = 1
+            if pre-cur > 3:
+                bigdiff = 1
         if cur == pre:
-            same_found += 1
-        if abs(cur - pre) > 3:
-            big_diff_found += 1
-    if (increase_found and decrease_found) or same_found or big_diff_found:
-        pass
-    else:
-        partone+= 1
-        parttwo+= 1
+            bigdiff = 1
 
-print(partone,parttwo)
+    if ( increasing and decreasing ) or bigdiff:
+        return False
+    else:
+        return True
+
+z = [[int(x) for x in line.split()] for line in fileinput.input()]
+
+for l in z:
+    if testReport(l):
+        partone += 1
+        parttwo += 1
+    else:
+        safe = 0
+        for e in range(0, len(l)):
+            newlist = l.copy()
+            del newlist[e]
+            if testReport(newlist):
+                safe = 1
+        parttwo += safe
+
+print(partone, parttwo)

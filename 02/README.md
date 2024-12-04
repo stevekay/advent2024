@@ -1,7 +1,5 @@
 ```sh
-[steve@ryzen 02]$ ./02.py <example.txt
-2
 [steve@ryzen 02]$ ./02.py <input.txt
-516
+516 561
 [steve@ryzen 02]$
 ```
