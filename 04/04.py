@@ -21,8 +21,8 @@ for y in range(len(a)):
             for yd in [ -1, 0, 1]:
                 found = 1
                 for l in range(len(target)):
-                    if x+xd*l not in range (0, len(a[0])) or \
-                       y+yd*l not in range (0, len(a)) or \
+                    if x+xd*l not in range (len(a[0])) or \
+                       y+yd*l not in range (len(a)) or \
                        a[y+yd*l][x+xd*l] != target[l]:
                         found = 0
                 partone += found
