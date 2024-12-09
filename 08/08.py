@@ -2,37 +2,54 @@
 
 import fileinput
 
-grid,antennas,answers = [],{},([0,0])
+grid=[]
+antennas={}
+       
+def drawGrid(g):
+    a = '   ' + ''.join(str(i) for i in range(len(grid[0])))
+#    print(a)
+    antinodes = 0
+    for row in range(len(grid)):
+        antinodes += g[row].count('#')
+#        print(f'0{row}|' + ''.join(g[row]) + f'|0{row}')
+#    print(a)
+    print("Antinodes=",antinodes)
 
 for line in open(0).readlines():
     grid.append(list(line.strip()))
+#print(grid)
+
+drawGrid(grid)
 
 for y in range(len(grid)):
     for x in range(len(grid[y])):
         c = grid[y][x];
         if c.isalnum():
+            print(c,"found at x=",x,"y=",y)
             if not c in antennas:
                 antennas[c] = []
             antennas[c].append([x,y])
+    maxX = x
+maxY = y
+
+print(antennas)
+#print("maxX=",maxX,"maxY=",maxY)
 
 for a in antennas:
-    signals = antennas[a]
-    for position in range(len(signals)):
-        (thisX,thisY) = signals[position]
-        for newposition in set(range(len(signals))) - {position}:
-            (newX,newY) = signals[newposition]
-            diffX = newX - thisX
-            diffY = newY - thisY
-            antiX = newX + diffX
-            antiY = newY + diffY
+#    print("antenna label:",a," : ",antennas[a])
+    l=antennas[a]
+    for p in range(0,len(l)):
+        (thisX,thisY)=l[p]
+#        print(" -> antenna ",p,"at x=",thisX,",y=",thisY)
+        for q in range(0,len(l)):
+            if p != q:
+                (newX,newY)=l[q]
+                diffX = newX-thisX
+                diffY = newY-thisY
+                antiX = newX + diffX
+                antiY = newY + diffY
+#                print("  -> comparing with ",q,"at",newX,",",newY,"diffX=",diffX,"diffY=",diffY,"so antinode at x=",antiX,"y=",antiY)
+                if antiY >= 0 and antiY <= maxY and antiX >= 0 and antiX <= maxX:
+                    grid[antiY][antiX]='#'
+drawGrid(grid)
 
-            while 0 <= antiY <= y and 0 <= antiX <= x:
-                grid[antiY][antiX] = '#'
-                antiY += diffY
-                antiX += diffX
-
-for row in range(len(grid)):
-    answers[0] += grid[row].count('#')
-    answers[1] += len([i for i in grid[row] if i != '.'])
-
-print(answers)
