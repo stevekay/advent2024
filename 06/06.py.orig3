@@ -1,0 +1,55 @@
+#!/usr/bin/python3
+
+import fileinput
+import pprint
+import sys
+
+a=[]
+been={}
+xxx = { 'N': { 'X':  0, 'Y': -1, 'NEXT': 'E' }, 
+        'E': { 'X': +1, 'Y':  0, 'NEXT': 'S' },
+        'S': { 'X':  0, 'Y':  1, 'NEXT': 'W' },
+        'W': { 'X': -1, 'Y':  0, 'NEXT': 'N' } }
+        
+print(xxx)
+print(xxx['N'])
+print(xxx['N']['X'])
+sys.exit(5)
+
+for b in open(0).readlines():
+    a.append(list(b.strip()))
+
+for rownum in range(0,len(a)):
+    if '^' in a[rownum]:
+        robotY=rownum
+        robotX=a[rownum].index("^")
+robotDir='N'
+
+while(1):
+    # move robot
+    if robotDir == 'N':
+        diffX=0
+        diffY=-1
+        turn='E'
+    elif robotDir == 'E':
+        diffX=1
+        diffY=0
+        turn='S'
+    elif robotDir == 'S':
+        diffX=0
+        diffY=1
+        turn='W'
+    elif robotDir == 'W':
+        diffX=-1
+        diffY=0
+        turn='N'
+
+    while a[robotY+diffY][robotX+diffX] != '#':
+        been[robotX,robotY]=1
+        robotY+=diffY
+        robotX+=diffX
+        if robotY == len(a)-1 or robotY < 1 or robotX == len(a[0])-1 or robotX < 1:
+            print(len(been)+1)
+            sys.exit(5)
+
+    robotDir = turn
